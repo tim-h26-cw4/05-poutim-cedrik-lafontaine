@@ -11,7 +11,7 @@ export default class Chef {
   }
 
   init() {
-    const poutines = document.querySelectorAll('.poutine');
+    const poutines = this.element.querySelectorAll('.poutine');
     for (let i = 0; i < poutines.length; i++) {
       const element = poutines[i];
       const poutine = new Poutine(element);
@@ -27,18 +27,37 @@ export default class Chef {
   }
 
   sendOrder() {
+    this.container.innerHTML = '';
+    this.createHeader();
+
     let nmbPoutines = 0;
     for (let i = 0; i < this.menu.length; i++) {
-      const poutine = this.menu[i].element;
+      const poutine = this.menu[i];
 
-      if (poutine.classList.contains('is-active')) {
+      if (poutine.element.classList.contains('is-active')) {
         nmbPoutines += 1;
+        this.createListItem(nmbPoutines, poutine.selectedType);
       }
     }
 
-    this.container.innerHTML = '';
+    this.createFooter(nmbPoutines);
+  }
+
+  createHeader() {
+    const h2 = document.createElement('h2');
+    h2.innerHTML = 'Voici le résumé de votre commande :';
+    this.container.appendChild(h2);
+  }
+
+  createListItem(index, name) {
     const p = document.createElement('p');
-    p.innerHTML = `Nombre total de poutine(s) : ${nmbPoutines}`;
+    p.innerHTML = `Poutine #${index} - ${name}`;
+    this.container.appendChild(p);
+  }
+
+  createFooter(count) {
+    const p = document.createElement('p');
+    p.innerHTML = `Nombre total de poutine(s) : ${count}`;
     this.container.appendChild(p);
   }
 }

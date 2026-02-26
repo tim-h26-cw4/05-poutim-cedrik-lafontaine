@@ -14,20 +14,33 @@ export default class Poutine {
   }
 
   selectType(event) {
-    for (let i = 0; i < this.types.length; i++) {
-      const bouton = this.types[i];
-      bouton.classList.remove('is-active');
+    if (!event.currentTarget.classList.contains('is-active')) {
+      for (let i = 0; i < this.types.length; i++) {
+        const bouton = this.types[i];
+        bouton.classList.remove('is-active');
+      }
     }
 
-    event.currentTarget.classList.add('is-active');
+    event.currentTarget.classList.toggle('is-active');
+    if (event.currentTarget.classList.contains('is-active')) {
+      this.element.classList.add('is-active');
+    } else {
+      this.element.classList.remove('is-active');
+    }
+
     this.selectedType = event.currentTarget.innerHTML;
     this.updatePhoto();
   }
 
   updatePhoto() {
-    this.element.classList.add('is-active');
     const image = this.element.querySelector('.poutine__image');
-    image.classList.add('is-active');
-    image.src = `assets/images/${this.selectedType}.png`;
+
+    if (this.element.classList.contains('is-active')) {
+      image.src = `assets/images/${this.selectedType}.png`;
+      image.classList.add('is-active');
+    } else {
+      image.src = 'assets/images/poutine.png';
+      image.classList.remove('is-active');
+    }
   }
 }
